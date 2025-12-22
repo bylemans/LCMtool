@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCM Network Design & BOM tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="p-6">
+    <div class="max-w-8xl mx-auto">
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 mb-6">
+            <div class="flex justify-between items-center mb-6 border-b border-white/20 pb-4">
+                <div class="flex items-center gap-4">
+                    <img src="logo.png" alt="LCM Logo" class="h-16 w-16 object-contain" onerror="this.style.display='none'">
+                    <h1 class="text-4xl font-bold text-white">LCM Network Design & BOM tool</h1>
+                </div>
+            </div>
+ 
+            <div class="flex overflow-x-auto whitespace-nowrap mb-6 border-b border-white/20">
+                <button onclick="setActiveTab('site-details')" id="tab-site-details" class="tab-button active text-white px-6 py-3 font-medium transition-all hover:bg-white/20">🏢 Site Details</button>
+                <button onclick="setActiveTab('checklist')" id="tab-checklist" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">📋 Checklist</button>
+                <button onclick="setActiveTab('switches')" id="tab-switches" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">🔀 Switches</button>
+                <button onclick="setActiveTab('mdf')" id="tab-mdf" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">🏢 MDF</button>
+                <button onclick="setActiveTab('wifi')" id="tab-wifi" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">🛜 WiFi</button>
+                <button onclick="setActiveTab('cabling-sfp')" id="tab-cabling-sfp" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">➰ Cabling & SFP</button>
+                <button onclick="setActiveTab('rack-power')" id="tab-rack-power" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">🔌 Rack & Power</button>
+                <button onclick="setActiveTab('bom-lease')" id="tab-bom-lease" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">🛒 BOM Lease (<span id="basket-count-tab">0</span>)</button>
+                <button onclick="setActiveTab('bom-purchase')" id="tab-bom-purchase" class="tab-button text-white px-6 py-3 font-medium transition-all hover:bg-white/20">🛒 BOM Purchase</button>
+            </div>
+ 
+            <div id="tab-content" class="min-h-[60vh]">
+                <!-- Site Details Tab -->
+                <div id="site-details" class="tab-pane"></div>
+                
+                <!-- Checklist Tab -->
+                <div id="checklist" class="tab-pane hidden"></div>
+                
+                <!-- Switches Tab -->
+                <div id="switches" class="tab-pane hidden"></div>
+                
+                <!-- MDF Tab -->
+                <div id="mdf" class="tab-pane hidden"></div>
+                
+                <!-- WiFi Tab -->
+                <div id="wifi" class="tab-pane hidden"></div>
+                
+                <!-- Cabling & SFP Tab -->
+                <div id="cabling-sfp" class="tab-pane hidden"></div>
+                
+                <!-- Rack & Power Tab -->
+                <div id="rack-power" class="tab-pane hidden"></div>
+                
+                <!-- BOM Lease Tab -->
+                <div id="bom-lease" class="tab-pane hidden"></div>
+                
+                <!-- BOM Purchase Tab -->
+                <div id="bom-purchase" class="tab-pane hidden"></div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- JavaScript Files -->
+    <script src="js/config.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/checklist.js"></script>
+    <script src="js/basket.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>

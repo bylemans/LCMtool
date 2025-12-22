@@ -1,0 +1,148 @@
+/* Main Body Styles */
+body {
+    background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #0f172a);
+    min-height: 100vh;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+/* Tab Button Styles */
+.tab-button.active {
+    background-color: #1e3a8a;
+    border-bottom: 4px solid #3b82f6;
+    color: white;
+}
+
+.tab-button {
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Tab Pane Styles */
+.tab-pane {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Collapsible Section Styles */
+.collapsible-section {
+    transition: all 0.3s ease;
+}
+
+.collapsible-section:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Form Input Styles */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* Button Styles */
+button {
+    transition: all 0.2s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Status Icon Animation */
+.status-icon {
+    transition: transform 0.3s ease;
+}
+
+.status-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Device Result Card */
+.device-card {
+    transition: all 0.3s ease;
+}
+
+.device-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading Spinner */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+/* Utility Classes */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
