@@ -414,6 +414,149 @@ function getSwitchesHTML() {
     `;
 }
 
+// Helper function to generate MDF equipment table
+function generateMDFEquipmentTable(section, config) {
+    let html = '<div class="bg-white/5 rounded-lg p-4 mt-4">';
+    html += '<h4 class="text-white font-semibold mb-4 text-lg">Equipment</h4>';
+    
+    // Main items
+    if (config.main && config.main.length > 0) {
+        html += '<div class="space-y-4 mb-6">';
+        config.main.forEach(item => {
+            const inBasket = isMDFItemInBasket(item.name);
+            html += `
+                <div class="bg-white/10 rounded-lg p-4 flex gap-4 items-start">
+                    ${item.image ? `
+                    <div class="flex-shrink-0">
+                        <img src="${item.image}" alt="${item.name}" class="w-48 h-36 object-cover rounded-lg border border-white/20" />
+                    </div>
+                    ` : ''}
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h5 class="text-white font-semibold text-lg flex items-center gap-2">
+                                    ${item.name}
+                                    ${inBasket ? '<span class="text-green-400 text-sm">✓ In BOM</span>' : ''}
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <label class="text-white text-sm">Quantity:</label>
+                            <input 
+                                type="number" 
+                                min="0" 
+                                value="${item.defaultQty || 1}" 
+                                id="qty-${section}-${item.id}"
+                                class="w-20 bg-white/10 text-white border border-white/20 rounded px-3 py-2 text-sm"
+                            />
+                            <button 
+                                onclick="addMDFEquipment('${section}', '${item.id}', '${item.name}', document.getElementById('qty-${section}-${item.id}').value, false)"
+                                class="px-6 py-2 rounded text-sm font-semibold transition-all ${inBasket ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'} text-white"
+                            >
+                                ${inBasket ? 'Update' : 'Add to BOM'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+    }
+    
+    // Accessories
+    if (config.accessories && config.accessories.length > 0) {
+        html += '<div class="border-t border-white/20 pt-4 mt-4">';
+        html += '<h5 class="text-white font-semibold mb-3">Accessories</h5>';
+        
+        // Check if accessories have types (for grouping like 1G/10G SFPs)
+        const hasTypes = config.accessories.some(acc => acc.type);
+        
+        if (hasTypes) {
+            // Group by type
+            const types = [...new Set(config.accessories.map(acc => acc.type))];
+            html += '<div class="grid md:grid-cols-2 gap-4">';
+            
+            types.forEach(type => {
+                const items = config.accessories.filter(acc => acc.type === type);
+                html += `
+                    <div class="bg-white/5 rounded-lg p-3">
+                        <h6 class="text-white font-semibold mb-3 text-sm">${type} SFPs</h6>
+                        <div class="space-y-2">
+                `;
+                
+                items.forEach(acc => {
+                    const inBasket = isMDFItemInBasket(acc.name);
+                    html += `
+                        <div class="flex justify-between items-center text-sm">
+                            <div class="flex items-center gap-2">
+                                <input 
+                                    type="number" 
+                                    min="0" 
+                                    value="${acc.defaultQty || 0}" 
+                                    id="qty-${section}-acc-${acc.id}"
+                                    class="w-16 bg-white/10 text-white border border-white/20 rounded px-2 py-1 text-xs"
+                                />
+                                <span class="text-white flex items-center gap-2">
+                                    ${acc.name}
+                                    ${inBasket ? '<span class="text-green-400 text-xs">✓</span>' : ''}
+                                </span>
+                            </div>
+                            <button 
+                                onclick="addMDFEquipment('${section}', '${acc.id}', '${acc.name}', document.getElementById('qty-${section}-acc-${acc.id}').value, true)"
+                                class="px-3 py-1 rounded text-xs transition-all ${inBasket ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'} text-white"
+                            >
+                                Add
+                            </button>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+        } else {
+            // No types, list normally
+            html += '<div class="space-y-2">';
+            config.accessories.forEach(acc => {
+                const inBasket = isMDFItemInBasket(acc.name);
+                html += `
+                    <div class="flex justify-between items-center bg-white/5 rounded p-2">
+                        <div class="flex items-center gap-2">
+                            <input 
+                                type="number" 
+                                min="0" 
+                                value="${acc.defaultQty || 0}" 
+                                id="qty-${section}-acc-${acc.id}"
+                                class="w-16 bg-white/10 text-white border border-white/20 rounded px-2 py-1 text-sm"
+                            />
+                            <span class="text-white text-sm flex items-center gap-2">
+                                ${acc.name}
+                                ${inBasket ? '<span class="text-green-400 text-xs">✓</span>' : ''}
+                            </span>
+                        </div>
+                        <button 
+                            onclick="addMDFEquipment('${section}', '${acc.id}', '${acc.name}', document.getElementById('qty-${section}-acc-${acc.id}').value, true)"
+                            class="px-4 py-1 rounded text-xs transition-all ${inBasket ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'} text-white"
+                        >
+                            Add
+                        </button>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+        
+        html += '</div>';
+    }
+    
+    html += '</div>';
+    return html;
+}
+
 // MDF Tab HTML - COMPLETE
 function getMDFHTML() {
     return `
@@ -429,13 +572,14 @@ function getMDFHTML() {
                 <span id="arrow-wan-switches" class="text-white text-2xl">▼</span>
             </div>
             <div id="content-wan-switches" class="p-6 pt-0">
-                <ul class="space-y-3 text-white">
+                <ul class="space-y-3 text-white mb-4">
                     <li><label><input type="checkbox" onchange="updateSectionStatus('wan-switches')"> 2 WAN switches added to the BOM</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('wan-switches')"> WAN switch model verified (EX4100-24MP or equivalent)</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('wan-switches')"> SFP's needed for ISP input on WAN switches</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('wan-switches')"> Redundant uplinks configured</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('wan-switches')"> Power requirements verified</label></li>
                 </ul>
+                ${generateMDFEquipmentTable('wan-switches', MDF_EQUIPMENT.wan_switches)}
             </div>
         </div>
 
@@ -449,7 +593,7 @@ function getMDFHTML() {
                 <span id="arrow-routers" class="text-white text-2xl">▼</span>
             </div>
             <div id="content-routers" class="p-6 pt-0">
-                <ul class="space-y-3 text-white">
+                <ul class="space-y-3 text-white mb-4">
                     <li><label><input type="checkbox" onchange="updateSectionStatus('routers')"> 2 Cisco C8200 routers added to BOM for dual DIA</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('routers')"> 2x Cisco SFP's added per router</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('routers')"> Cisco C8200 or C8300 needed for IPT?</label></li>
@@ -457,6 +601,7 @@ function getMDFHTML() {
                     <li><label><input type="checkbox" onchange="updateSectionStatus('routers')"> VEdge replacement in scope or already replaced?</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('routers')"> Routing protocols documented</label></li>
                 </ul>
+                ${generateMDFEquipmentTable('routers', MDF_EQUIPMENT.routers)}
             </div>
         </div>
 
@@ -470,7 +615,7 @@ function getMDFHTML() {
                 <span id="arrow-firewalls" class="text-white text-2xl">▼</span>
             </div>
             <div id="content-firewalls" class="p-6 pt-0">
-                <ul class="space-y-3 text-white">
+                <ul class="space-y-3 text-white mb-4">
                     <li><label><input type="checkbox" onchange="updateSectionStatus('firewalls')"> FW refresh is in scope</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('firewalls')"> Firewall model selected and added to BOM</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('firewalls')"> High availability configuration planned</label></li>
@@ -478,25 +623,52 @@ function getMDFHTML() {
                     <li><label><input type="checkbox" onchange="updateSectionStatus('firewalls')"> Security policies reviewed</label></li>
                     <li><label><input type="checkbox" onchange="updateSectionStatus('firewalls')"> Licensing requirements verified</label></li>
                 </ul>
+                ${generateMDFEquipmentTable('firewalls', MDF_EQUIPMENT.firewalls)}
             </div>
         </div>
 
-        <!-- Dummy -->
+        <!-- Core Switches -->
         <div class="bg-white/5 rounded-xl mb-4">
-            <div class="flex justify-between items-center p-4 cursor-pointer hover:bg-white/10 transition-all collapsible-section" onclick="toggleSection('dummy')">
+            <div class="flex justify-between items-center p-4 cursor-pointer hover:bg-white/10 transition-all collapsible-section" onclick="toggleSection('core-switches')">
                 <div class="flex items-center gap-3">
-                    <span id="status-dummy" class="text-2xl status-icon">❌</span>
-                    <h2 class="text-xl font-semibold text-white">Dummy</h2>
+                    <span id="status-core-switches" class="text-2xl status-icon">❌</span>
+                    <h2 class="text-xl font-semibold text-white">Core Switches</h2>
                 </div>
-                <span id="arrow-dummy" class="text-white text-2xl">▼</span>
+                <span id="arrow-core-switches" class="text-white text-2xl">▼</span>
             </div>
-            <div id="content-dummy" class="p-6 pt-0">
-                <ul class="space-y-3 text-white">
-                    <li><label><input type="checkbox" onchange="updateSectionStatus('dummy')"> Placeholder item 1</label></li>
-                    <li><label><input type="checkbox" onchange="updateSectionStatus('dummy')"> Placeholder item 2</label></li>
-                    <li><label><input type="checkbox" onchange="updateSectionStatus('dummy')"> Placeholder item 3</label></li>
-                    <li><label><input type="checkbox" onchange="updateSectionStatus('dummy')"> Placeholder item 4</label></li>
+            <div id="content-core-switches" class="p-6 pt-0">
+                <ul class="space-y-3 text-white mb-4">
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> 2 Core switches added to the BOM</label></li>
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> Core switch model verified</label></li>
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> SFP requirements calculated</label></li>
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> Uplink design verified</label></li>
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> Redundancy configured</label></li>
                 </ul>
+                ${generateMDFEquipmentTable('core-switches', MDF_EQUIPMENT.core_switches)}
+            </div>
+        </div>
+
+        <!-- Cabling Kit -->
+        <div class="bg-white/5 rounded-xl mb-4">
+            <div class="flex justify-between items-center p-4 cursor-pointer hover:bg-white/10 transition-all collapsible-section" onclick="toggleSection('cabling-kit')">
+                <div class="flex items-center gap-3">
+                    <span id="status-cabling-kit" class="text-2xl status-icon">❌</span>
+                    <h2 class="text-xl font-semibold text-white">Cabling Kit</h2>
+                </div>
+                <span id="arrow-cabling-kit" class="text-white text-2xl">▼</span>
+            </div>
+            <div id="content-cabling-kit" class="p-6 pt-0">
+                <ul class="space-y-3 text-white mb-4">
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('cabling-kit')"> Cabling requirements assessed</label></li>
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('cabling-kit')"> Cable lengths verified</label></li>
+                    <li><label><input type="checkbox" onchange="updateSectionStatus('cabling-kit')"> Kit quantities calculated</label></li>
+                </ul>
+                ${generateMDFEquipmentTable('cabling-kit', MDF_EQUIPMENT.cabling_kit)}
+                <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 mt-4">
+                    <p class="text-blue-200 text-sm">
+                        <strong>Note:</strong> Cable details will be filled in from the Cabling & SFP tab based on your specific requirements.
+                    </p>
+                </div>
             </div>
         </div>
     `;

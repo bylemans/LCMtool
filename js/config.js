@@ -39,5 +39,87 @@ const MDF_SECTIONS = [
     'wan-switches',
     'routers',
     'firewalls',
-    'dummy'
+    'core-switches',
+    'cabling-kit'
 ];
+
+// MDF Equipment Configuration
+const MDF_EQUIPMENT = {
+    wan_switches: {
+        main: [
+            { 
+                id: 'ex4000-12mp', 
+                name: 'Juniper EX4000-12MP', 
+                defaultQty: 2,
+                image: 'https://via.placeholder.com/200x150/1e3a8a/ffffff?text=EX4000-12MP'
+            }
+        ],
+        accessories: [
+            { id: 'sfp-1g-sx-c', name: 'SFP-1G-SX-C', type: '1G' },
+            { id: 'sfp-10g-sr', name: 'SFP-10G-SR', type: '10G' },
+            { id: 'sfp-1g-lx-c', name: 'SFP-1G-LX-C', type: '1G' },
+            { id: 'sfp-10g-lr', name: 'SFP-10G-LR', type: '10G' }
+        ]
+    },
+    routers: {
+        main: [
+            { 
+                id: 'c8200-1n-4t', 
+                name: 'Cisco C8200-1N-4T', 
+                defaultQty: 2,
+                image: 'https://via.placeholder.com/200x150/1e3a8a/ffffff?text=C8200-1N-4T'
+            },
+            { 
+                id: 'c8300-1n1s-6t', 
+                name: 'Cisco C8300-1N1S-6T', 
+                defaultQty: 1,
+                image: 'https://via.placeholder.com/200x150/1e3a8a/ffffff?text=C8300-1N1S-6T'
+            }
+        ],
+        accessories: [
+            { id: 'glc-te', name: 'Cisco GLC-TE=', defaultQty: 2 }
+        ]
+    },
+    firewalls: {
+        main: [
+            { 
+                id: 'pa-1410', 
+                name: 'Palo Alto PA-1410', 
+                defaultQty: 2,
+                image: 'https://via.placeholder.com/200x150/1e3a8a/ffffff?text=PA-1410'
+            },
+            { 
+                id: 'pa-460', 
+                name: 'Palo Alto PA-460', 
+                defaultQty: 2,
+                image: 'https://via.placeholder.com/200x150/1e3a8a/ffffff?text=PA-460'
+            }
+        ],
+        accessories: []
+    },
+    core_switches: {
+        main: [
+            { 
+                id: 'ex4650-48y-afo', 
+                name: 'Juniper EX4650-48Y-AFO', 
+                defaultQty: 2,
+                image: 'https://via.placeholder.com/200x150/1e3a8a/ffffff?text=EX4650-48Y-AFO'
+            }
+        ],
+        accessories: [
+            { id: 'sfp-1g-sx-c', name: 'SFP-1G-SX-C', type: '1G' },
+            { id: 'sfp-1g-lx-c', name: 'SFP-1G-LX-C', type: '1G' },
+            { id: 'sfp-1g-t', name: 'SFP-1G-T', type: '1G' },
+            { id: 'sfp-10g-sr', name: 'SFP-10G-SR', type: '10G' },
+            { id: 'sfp-10g-lr', name: 'SFP-10G-LR', type: '10G' },
+            { id: 'sfp-10g-t', name: 'SFP-10G-T', type: '10G' }
+        ]
+    },
+    cabling_kit: {
+        main: [
+            { id: 'kit-1-standard', name: 'Kit 1 (Standard Length)', defaultQty: 1 },
+            { id: 'kit-2-longer', name: 'Kit 2 (Longer Length)', defaultQty: 1 }
+        ],
+        accessories: []
+    }
+};
