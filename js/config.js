@@ -53,7 +53,7 @@ const MDF_EQUIPMENT = {
                 id: 'ex4000-12mp', 
                 name: 'Juniper EX4000-12MP', 
                 defaultQty: 2,
-                image: '../PICS/ex4000-12mp.png',
+                image: 'PICS/ex4000-12mp.png',
                 description: `Requirements:
 - 
 - 
