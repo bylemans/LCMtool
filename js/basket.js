@@ -7,8 +7,8 @@ function isInBasket(deviceIp, itemName) {
 function addMDFEquipment(section, itemId, itemName, quantity, isAccessory = false) {
     const type = isAccessory ? `${section}-accessory` : section;
     
-    // Remove existing item of same type and name
-    orderBasket = orderBasket.filter(item => !(item.type === type && item.name === itemName));
+    // Remove existing item of same type and name FOR THIS SECTION
+    orderBasket = orderBasket.filter(item => !(item.type === type && item.name === itemName && item.category === section));
 
     orderBasket.push({
         id: Date.now() + Math.random(),
@@ -27,9 +27,29 @@ function addMDFEquipment(section, itemId, itemName, quantity, isAccessory = fals
     }
 }
 
-// Check if MDF item is in basket
-function isMDFItemInBasket(itemName) {
-    return orderBasket.some(item => item.name === itemName);
+// Check if MDF item is in basket (for a specific section)
+function isMDFItemInBasket(itemName, section = null) {
+    if (section) {
+        // Check if item exists in this specific section
+        return orderBasket.some(item => item.name === itemName && item.category === section);
+    } else {
+        // Check if item exists in any section (for backward compatibility)
+        return orderBasket.some(item => item.name === itemName);
+    }
+}
+
+// Add switch to basket
+function addSwitch(deviceIp, name, qtyId) {
+    const qtyInput = document.getElementById(`qty-switch-${qtyId}`);
+    const qty = parseInt(qtyInput.value) || 1;
+    addToBasket(deviceIp, 'switch', name, qty);
+}
+
+// Add transceiver to basket
+function addTransceiver(deviceIp, name, qtyId) {
+    const qtyInput = document.getElementById(`qty-${qtyId}`);
+    const qty = parseInt(qtyInput.value) || 1;
+    addToBasket(deviceIp, 'transceiver', name, qty);
 }
 
 // Add item to basket
@@ -52,20 +72,6 @@ function addToBasket(deviceIp, type, name, quantity) {
     });
     updateBasketCount();
     renderDeviceResults();
-}
-
-// Add switch to basket
-function addSwitch(deviceIp, name, qtyId) {
-    const qtyInput = document.getElementById(`qty-switch-${qtyId}`);
-    const qty = parseInt(qtyInput.value) || 1;
-    addToBasket(deviceIp, 'switch', name, qty);
-}
-
-// Add transceiver to basket
-function addTransceiver(deviceIp, name, qtyId) {
-    const qtyInput = document.getElementById(`qty-${qtyId}`);
-    const qty = parseInt(qtyInput.value) || 1;
-    addToBasket(deviceIp, 'transceiver', name, qty);
 }
 
 // Update basket count in tab
