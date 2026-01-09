@@ -432,16 +432,11 @@ function generateMDFEquipmentTable(section, config) {
                     ` : ''}
                     <div class="flex-1">
                         <div class="flex justify-between items-start mb-3">
-                            <div class="flex-1">
+                            <div>
                                 <h5 class="text-white font-semibold text-lg flex items-center gap-2">
                                     ${item.name}
                                     ${inBasket ? '<span class="text-green-400 text-sm">✓ In BOM</span>' : ''}
                                 </h5>
-                                ${item.description ? `
-                                <div class="text-gray-300 text-sm mt-0.5 whitespace-pre-line">
-                                    ${item.description}
-                                </div>
-                                ` : ''}
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
@@ -472,23 +467,19 @@ function generateMDFEquipmentTable(section, config) {
         html += '<div class="border-t border-white/20 pt-4 mt-4">';
         html += '<h5 class="text-white font-semibold mb-3">Accessories</h5>';
         
-        // Check if accessories have types (for grouping like 1G/10G SFPs or Stack cables)
+        // Check if accessories have types (for grouping like 1G/10G SFPs)
         const hasTypes = config.accessories.some(acc => acc.type);
         
         if (hasTypes) {
             // Group by type
             const types = [...new Set(config.accessories.map(acc => acc.type))];
-            // Use 3 columns if we have 3 types (like core switches with Stack cables, 1G, 10G)
-            const gridCols = types.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2';
-            html += `<div class="grid ${gridCols} gap-4">`;
+            html += '<div class="grid md:grid-cols-2 gap-4">';
             
             types.forEach(type => {
                 const items = config.accessories.filter(acc => acc.type === type);
-                // Determine label - if it already contains 'SFP' or 'cables', use as-is, otherwise append 'SFPs'
-                const typeLabel = type.includes('SFP') || type.includes('cables') ? type : `${type} SFPs`;
                 html += `
                     <div class="bg-white/5 rounded-lg p-3">
-                        <h6 class="text-white font-semibold mb-3 text-sm">${typeLabel}</h6>
+                        <h6 class="text-white font-semibold mb-3 text-sm">${type} SFPs</h6>
                         <div class="space-y-2">
                 `;
                 
@@ -565,7 +556,7 @@ function generateMDFEquipmentTable(section, config) {
     return html;
 }
 
-// MDF Tab HTML - COMPLETE with all sections
+// MDF Tab HTML - COMPLETE with L2 Mgmt Switch
 function getMDFHTML() {
     return `
         <h2 class="text-3xl font-semibold text-white mb-4">🏢 MDF</h2>
@@ -644,7 +635,6 @@ function getMDFHTML() {
                 <div class="bg-white/5 rounded-lg p-4 mt-4">
                     <ul class="space-y-3 text-white">
                         <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> Verified the site size and added core switches accordingly (Large = 3, Medium = 2)</label></li>
-                        <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> Stack cables added to BOM</label></li>
                         <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> SFP requirements calculated</label></li>
                         <li><label><input type="checkbox" onchange="updateSectionStatus('core-switches')"> Tried to upgrade uplink SFP's to 10G (where possible)</label></li>
                     </ul>
@@ -668,32 +658,6 @@ function getMDFHTML() {
                         <li><label><input type="checkbox" onchange="updateSectionStatus('l2-mgmt-switch')"> L2 management switch added to isolate management traffic</label></li>
                         <li><label><input type="checkbox" onchange="updateSectionStatus('l2-mgmt-switch')"> Verified port count is sufficient for all devices</label></li>
                     </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Extra L2 Switches -->
-        <div class="bg-white/5 rounded-xl mb-4">
-            <div class="flex justify-between items-center p-4 cursor-pointer hover:bg-white/10 transition-all collapsible-section" onclick="toggleSection('extra-l2-switches')">
-                <div class="flex items-center gap-3">
-                    <span id="status-extra-l2-switches" class="text-2xl status-icon">❌</span>
-                    <h2 class="text-xl font-semibold text-white">Extra L2 Switches</h2>
-                </div>
-                <span id="arrow-extra-l2-switches" class="text-white text-2xl">▼</span>
-            </div>
-            <div id="content-extra-l2-switches" class="p-6 pt-0">
-                ${generateMDFEquipmentTable('extra-l2-switches', MDF_EQUIPMENT.extra_l2_switches)}
-                <div class="bg-white/5 rounded-lg p-4 mt-4">
-                    <ul class="space-y-3 text-white">
-                        <li><label><input type="checkbox" onchange="updateSectionStatus('extra-l2-switches')"> Additional L2 switch requirements assessed</label></li>
-                        <li><label><input type="checkbox" onchange="updateSectionStatus('extra-l2-switches')"> Switch models selected (EX4100-48MP or EX4100-24MP)</label></li>
-                        <li><label><input type="checkbox" onchange="updateSectionStatus('extra-l2-switches')"> Port density verified</label></li>
-                    </ul>
-                    <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 mt-4">
-                        <p class="text-blue-200 text-sm">
-                            <strong>Note:</strong> Add extra L2 switches as needed for additional port capacity or specific network segments. Set quantity to 0 if not needed.
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>

@@ -133,6 +133,8 @@ const MDF_EQUIPMENT = {
             }
         ],
         accessories: [
+            { id: 'qsfp-100g-dac-50cm', name: 'QSFP-100G-DAC-50CM', type: 'Stack cables' },
+            { id: 'jnp-100g-dac-1m', name: 'JNP-100G-DAC-1M', type: 'Stack cables' },
             { id: 'sfp-1g-sx-c', name: 'SFP-1G-SX-C', type: '1G' },
             { id: 'sfp-1g-lx-c', name: 'SFP-1G-LX-C', type: '1G' },
             { id: 'sfp-1g-t', name: 'SFP-1G-T', type: '1G' },
@@ -161,7 +163,7 @@ const MDF_EQUIPMENT = {
             { 
                 id: 'ex4100-48mp-extra', 
                 name: 'Juniper EX4100-48MP', 
-                defaultQty: 1,
+                defaultQty: 0,
                 image: 'PICS/ex4100-48mp.png',
                 description: `Requirements:
 - 
@@ -171,7 +173,7 @@ const MDF_EQUIPMENT = {
             { 
                 id: 'ex4100-24mp-extra', 
                 name: 'Juniper EX4100-24MP', 
-                defaultQty: 1,
+                defaultQty: 0,
                 image: 'PICS/ex4100-24mp.png',
                 description: `Requirements:
 - 
